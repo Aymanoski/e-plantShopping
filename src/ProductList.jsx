@@ -262,6 +262,16 @@ const handlePlantsClick = (e) => {
     [product.name]:true,
     }));
   };
+  const increaseCount=()=>{
+    setCount((prevState)=>
+    prevState+1,
+           );
+  };
+  const decreaseCount=()=>{
+    setCount((prevState)=>
+    prevState-1,
+           );
+  };
     return (
         <div>
              <div className="navbar" style={styleObj}>
@@ -306,7 +316,7 @@ const handlePlantsClick = (e) => {
 
         </div>
  ) :  (
-    <CartItem onContinueShopping={handleContinueShopping}/>
+    <CartItem onContinueShopping={handleContinueShopping} inc={increaseCount} dec={decreaseCount}/>
 )}
     </div>
     );
