@@ -9,13 +9,11 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
- Kart.forEach(item => {
-    return item.quantity*item.cost;
- });
+    return Kart.reduce((total, item) => total + item.quantity * parseFloat(item.cost.slice(1)), 0);
   };
 
   const handleContinueShopping = (e) => {
-    onContinueShopping(e);
+    onContinueShopping();
   };
   const handleCheckoutShopping = (e) => {
   alert('Functionality to be added for future reference');
@@ -24,14 +22,16 @@ const CartItem = ({ onContinueShopping }) => {
 
 
   const handleIncrement = (item) => {
-    item.quantity++;
-    dispatch(updateQuantity(item));
+
+    dispatch(updateQuantity({ ...item, quantity: item.quantity + 1 }));
   };
 
   const handleDecrement = (item) => {
-    if(item.quantity!=0){
-    item.quantity--;}
-    dispatch(updateQuantity(item));
+    if (item.quantity > 1) {
+        dispatch(updateQuantity({ ...item, quantity: item.quantity - 1 }));
+      } else {
+        dispatch(removeItem(item));
+      }
 
    
   };
@@ -42,14 +42,14 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
-   return item.cost*item.quantity;
+   return (parseFloat(item.cost.slice(1))*item.quantity);
   };
 
   return (
     <div className="cart-container">
       <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
       <div>
-        {cart.map(item => (
+        {Kart.map(item => (
           <div className="cart-item" key={item.name}>
             <img className="cart-item-image" src={item.image} alt={item.name} />
             <div className="cart-item-details">
